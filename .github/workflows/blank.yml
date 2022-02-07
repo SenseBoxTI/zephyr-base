@@ -2,38 +2,57 @@
 
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  BOARD_NAME: native_posix
+  
+
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    container:
+      image: zephyrprojectrtos/ci
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      - name: Docker Run Action
-        uses: addnab/docker-run-action@v3
-        with: 
-          image: zephyrprojectrtos/ci
-          options: -v ${{ github.workspace }}:/workdir/project -u 0
-          run: |
-            west init
-            west update
-            mkdir application
-            cp -r zephyr/samples/hello_world/* application
-            west build -b native_posix application
+      - name: Cache west modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-zephyr-modules
+        with:
+          path: |
+            modules/
+            tools/
+            zephyr/
+            bootloader/
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('app/west.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
+            ${{ runner.os }}-build-
+            ${{ runner.os }}-
+          timeout-minutes: 2
+          continue-on-error: true
+
+      - name: Initialize workspace (west init)
+        run: west init -l app
+
+      - name: Update modules (west update)
+        run: west update
+
+      - name: West build
+        run: west build -p -b ${{ env.BOARD_NAME }} app
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: build
+          path: build/zephyr/zephyr.elf
+
 
