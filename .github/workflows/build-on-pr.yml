@@ -41,13 +41,13 @@ jobs:
         run: west update
 
       - name: Install xtensa toolchain
-        run: |
-          west espressif install
-          export ZEPHYR_TOOLCHAIN_VARIANT="espressif"
-          export ESPRESSIF_TOOLCHAIN_PATH="${HOME}/.espressif/tools/zephyr"
+        run: west espressif install
 
       - name: West build
-        run: west build -p -b ${{ env.BOARD_NAME }} app
+        run: |
+          export ZEPHYR_TOOLCHAIN_VARIANT="espressif"
+          export ESPRESSIF_TOOLCHAIN_PATH="${HOME}/.espressif/tools/zephyr"
+          west build -p -b ${{ env.BOARD_NAME }} app
 
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v2.3.1
