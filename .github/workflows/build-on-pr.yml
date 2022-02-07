@@ -8,8 +8,7 @@ on:
   workflow_dispatch:
 
 env:
-  BOARD_NAME: native_posix
-  
+  BOARD_NAME: esp32
 
 jobs:
   build:
@@ -32,15 +31,20 @@ jobs:
             tools/
             zephyr/
             bootloader/
+            /root/.espressif
           key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('app/west.yml') }}
-          timeout-minutes: 2
-          continue-on-error: true
 
       - name: Initialize workspace (west init)
-        run: west init
+        run: west init -l app
 
       - name: Update modules (west update)
         run: west update
+
+      - name: Install xtensa toolchain
+        run: |
+          west espressif install
+          export ZEPHYR_TOOLCHAIN_VARIANT="espressif"
+          export ESPRESSIF_TOOLCHAIN_PATH="${HOME}/.espressif/tools/zephyr"
 
       - name: West build
         run: west build -p -b ${{ env.BOARD_NAME }} app
@@ -50,5 +54,3 @@ jobs:
         with:
           name: build
           path: build/zephyr/zephyr.elf
-
-
