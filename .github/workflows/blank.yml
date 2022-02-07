@@ -28,12 +28,12 @@ jobs:
       - name: Docker Run Action
         uses: addnab/docker-run-action@v3
         with: 
-          image: zephyrprojectrtos/zephyr-build
+          image: zephyrprojectrtos/ci
           options: -v ${{ github.workspace }}:/workdir/project -u 0
           run: |
             west init
             west update
             mkdir application
-            cp -r zephyr/samples/hello-world/* application
+            cp -r zephyr/samples/hello_world/* application
             west build -b native_posix application
 
