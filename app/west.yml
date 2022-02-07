@@ -9,7 +9,7 @@ manifest:
   projects:
     - name: zephyr
       clone-depth: 1
-      revision: v2.7-branch
+      revision: main # 3.0.0-rc1
       import:
         name-blacklist:
           - canopennode # CAN bus IO
