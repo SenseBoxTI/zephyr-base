@@ -1,0 +1,39 @@
+manifest:
+  defaults:
+    remote: zephyrproject-rtos
+
+  remotes:
+    - name: zephyrproject-rtos
+      url-base: https://github.com/zephyrproject-rtos
+
+  projects:
+    - name: zephyr
+      clone-depth: 1
+      revision: main # 3.0.0-rc1
+      import:
+        name-blacklist:
+          - canopennode # CAN bus IO
+          - civetweb # websockets
+          # unused HAL SDKs
+          - hal_altera
+          - hal_atmel
+          - hal_cypress
+          - hal_gigadevice
+          - hal_infineon
+          - hal_microchip
+          - hal_nordic
+          - hal_nuvoton
+          - hal_nxp
+          - hal_openisa
+          - hal_quicklogic
+          - hal_rpi_pico
+          - hal_silabs
+          - hal_st
+          - hal_stm32
+          - hal_telink
+          - hal_ti
+          - loramac-node # lora things
+          - lvgl # graphics
+          - nrf_hw_models # hw models for nrf chips
+          - segger # flash using jlink
+          - psa-arch-tests # ARM tests
