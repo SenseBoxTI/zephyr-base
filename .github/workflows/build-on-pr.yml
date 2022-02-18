@@ -49,8 +49,14 @@ jobs:
           export ESPRESSIF_TOOLCHAIN_PATH="${HOME}/.espressif/tools/zephyr"
           west build -p -b ${{ env.BOARD_NAME }} app
 
-      - name: Upload a Build Artifact
+      - name: Upload a Build Artifacts
         uses: actions/upload-artifact@v2.3.1
         with:
           name: build
-          path: build/zephyr/zephyr.elf
+          path: |
+            build/esp-idf/build/bootloader/bootloader.bin
+            build/esp-idf/build/partitions_singleapp.bin
+            build/zephyr/zephyr.bin
+            flash.ps1
+            flash.sh
+
