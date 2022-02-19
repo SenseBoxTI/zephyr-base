@@ -14,7 +14,7 @@ The artifact includes a script for Windows and Linux. This script should automat
 
 Because operating systems protect you from running scripts you have to run a command to allow the execution of the script.
 
-**Windows**
+### Windows
 
 Allow the current logged in user to execute scripts. [more info](https://docs.microsoft.com/en-gb/powershell/module/microsoft.powershell.core/about/about_execution_policies?view=powershell-7.2)
 
@@ -22,7 +22,7 @@ Allow the current logged in user to execute scripts. [more info](https://docs.mi
 Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope CurrentUser
 ```
 
-**Linux**
+### Linux
 
 Allow the selected file to be executed
 
