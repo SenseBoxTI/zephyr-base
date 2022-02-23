@@ -55,10 +55,14 @@ jobs:
           cp build/esp-idf/build/partitions_singleapp.bin partitions_singleapp.bin
           cp build/zephyr/zephyr.bin zephyr.bin
 
+      - name: Get short commit hash
+        id: commit_sha
+        run: echo "::set-output name=short::$(git rev-parse --short HEAD)"
+
       - name: Upload a Build Artifacts
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: build
+          name: build-{{ steps.commit_sha.outputs.short }}
           path: |
             bootloader.bin
             partitions_singleapp.bin
