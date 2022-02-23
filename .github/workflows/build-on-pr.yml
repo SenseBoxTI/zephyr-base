@@ -59,4 +59,5 @@ jobs:
             build/zephyr/zephyr.bin
             flash.ps1
             flash.sh
+            *.md
 
