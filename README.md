@@ -2,7 +2,7 @@
 
 Basic example for Zephyr OS including Github Actions and flashing the build project on Windows and Linux
 
-## Downloading the compiled programm
+## Downloading the compiled program
 
 The compiled binaries are currently available at the Github Actions center. These files will also become available in the releases menu when there is a official release. The artifacts can be downloaded by clicking on a succesful workflow run. Download the *build* artifact.
 
